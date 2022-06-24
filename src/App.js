@@ -22,11 +22,31 @@ function App(props) {
         name={task.name}
         completed={task.completed}
         key={task.id}
+        toggleTaskCompleted={toggleTaskCompleted}
+        deleteTask={deleteTask}
       />
     )
   );
 
-
+  //Altera estado da checkbox
+  function toggleTaskCompleted(id) {
+    const updatedTasks = tasks.map(task => {
+      // se esta tarefa tiver o mesmo ID da tarefa editada
+      if (id === task.id) {
+        // use a propagação de objetos para criar um novo objeto
+        // cuja prop `completed` foi invertida
+        return {...task, completed: !task.completed}
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+    console.log(tasks[0])
+  }
+   
+  function deleteTask(id) {
+    console.log(id)
+  }
+  
   //Conta quantidade de tarefas e verifica se vai imprimir tarefas ou tarefa.  
   const tasksNoun = taskList.length !== 1 ? 'tasks' : 'task';
   //Título do texto na tela
@@ -47,7 +67,6 @@ function App(props) {
         role="list"
         className="todo-list stack-large stack-exception"
         aria-labelledby="list-heading"
-        
       >
         {taskList}
       </ul>
