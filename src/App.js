@@ -8,6 +8,7 @@ function App(props) {
 
   const [tasks, setTasks] = useState(props.tasks);
 
+  //Inserir
   function addTask(name) {
     if(name == ""){
        alert("Por favor, insira uma tarefa.");
@@ -24,6 +25,7 @@ function App(props) {
         key={task.id}
         toggleTaskCompleted={toggleTaskCompleted}
         deleteTask={deleteTask}
+        editTask={editTask}
       />
     )
   );
@@ -42,10 +44,25 @@ function App(props) {
     setTasks(updatedTasks);
     console.log(tasks[0])
   }
-   
+  //Excluir
   function deleteTask(id) {
-    console.log(id)
+    const remainingTasks = tasks.filter(task => id !== task.id);
+    setTasks(remainingTasks);
   }
+
+  //Alterar
+  function editTask(id, newName) {
+    const editedTaskList = tasks.map(task => {
+    // if this task has the same ID as the edited task
+      if (id === task.id) {
+        //
+        return {...task, name: newName}
+      }
+      return task;
+    });
+    setTasks(editedTaskList);
+  }
+  
   
   //Conta quantidade de tarefas e verifica se vai imprimir tarefas ou tarefa.  
   const tasksNoun = taskList.length !== 1 ? 'tasks' : 'task';
