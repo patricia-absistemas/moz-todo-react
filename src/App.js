@@ -14,7 +14,6 @@ const FILTER_MAP = {
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 //Estados ficam dentro da propriedade, pois toda vez que renderiza, altera eles.
-
 function App(props) {
 
   const [tasks, setTasks] = useState(props.tasks);
@@ -41,6 +40,16 @@ function App(props) {
     )
   );
 
+  const filterList = FILTER_NAMES.map(name => (
+    <FilterButton
+      key={name}
+      name={name}
+      isPressed={name === filter}
+      setFilter={setFilter}
+    />
+  ));
+  
+
   //Altera estado da checkbox
   function toggleTaskCompleted(id) {
     const updatedTasks = tasks.map(task => {
@@ -53,7 +62,6 @@ function App(props) {
       return task;
     });
     setTasks(updatedTasks);
-    console.log(tasks[0])
   }
   //Excluir
   function deleteTask(id) {
@@ -74,7 +82,6 @@ function App(props) {
     setTasks(editedTaskList);
   }
   
-  
   //Conta quantidade de tarefas e verifica se vai imprimir tarefas ou tarefa.  
   const tasksNoun = taskList.length !== 1 ? 'tasks' : 'task';
   //Título do texto na tela
@@ -85,9 +92,7 @@ function App(props) {
       <h1>TodoMatic</h1>
       <Form addTask={addTask}/>
       <div className="filters btn-group stack-exception">
-        <FilterButton />
-        <FilterButton />
-        <FilterButton />
+        {filterList}
       </div>
   
       <h2 id="list-heading">{headingText}</h2>
