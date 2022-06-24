@@ -4,6 +4,17 @@ import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import Todo from "./components/Todo";
 
+//Criação de objeto.
+const FILTER_MAP = {
+  All: () => true,
+  Active: task => !task.completed,
+  Completed: task => task.completed
+};
+
+const FILTER_NAMES = Object.keys(FILTER_MAP);
+
+//Estados ficam dentro da propriedade, pois toda vez que renderiza, altera eles.
+
 function App(props) {
 
   const [tasks, setTasks] = useState(props.tasks);
