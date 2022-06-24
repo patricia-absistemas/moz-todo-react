@@ -2,14 +2,34 @@ import React, { useState } from "react";
 
 export default function Todo(props) {
   const [isEditing, setEditing] = useState(true);
+  const [newName, setNewName] = useState('');
 
+  //Função que definirá um novo nome
+  function handleChange(e) {
+    setNewName(e.target.value);
+  }
+    //Função que manipula o onSubmit do form de editar
+    function handleSubmit(e) {
+      e.preventDefault();
+      props.editTask(props.id, newName);
+      setNewName("");
+      setEditing(false);
+    }
+  
   const editingTemplate = (
-    <form className="stack-small">
+    <form className="stack-small" onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="todo-label" htmlFor={props.id}>
           New name for {props.name}
         </label>
-        <input id={props.id} className="todo-text" type="text" />
+        <input
+          id={props.id}
+          className="todo-text"
+          type="text"
+          value={newName}
+          onChange={handleChange}
+        />
+
       </div>
       <div className="btn-group">
         <button
@@ -57,6 +77,6 @@ export default function Todo(props) {
     </div>
   );
     
-  return   <li className="todo">{isEditing ? editingTemplate : viewTemplate}  </li>    
+  return <li className="todo">{isEditing ? editingTemplate : viewTemplate}  </li>    
   }
   

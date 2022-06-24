@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 function Form(props) {
 
-    const [tasks, setTasks] = useState(props.tasks);
     const [name, setName] = useState('');
 
     // Faz alteração do valor do form
