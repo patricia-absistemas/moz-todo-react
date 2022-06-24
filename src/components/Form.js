@@ -2,13 +2,15 @@ import React, { useState } from "react";
 
 function Form(props) {
 
+    const [tasks, setTasks] = useState(props.tasks);
     const [name, setName] = useState('');
 
-    // near the top of the `Form` component
+    // Faz alteração do valor do form
     function handleChange(e) {
         setName(e.target.value);
       }
 
+    //Envia valor do form
     function handleSubmit(e) {
         e.preventDefault();
         props.addTask(name);
