@@ -17,28 +17,31 @@ const FILTER_NAMES = Object.keys(FILTER_MAP);
 function App(props) {
 
   const [tasks, setTasks] = useState(props.tasks);
+  const [filter, setFilter] = useState('All');
 
   //Inserir
   function addTask(name) {
-    if(name == ""){
+    if(name === ""){
        alert("Por favor, insira uma tarefa.");
      }else{
        const newTask = { id: "todo-" + nanoid(), name: name, completed: false };
        setTasks([...tasks, newTask]);
      }
   }
-  const taskList = tasks.map(task => (
+ 
+  const taskList = tasks
+  .filter(FILTER_MAP[filter])
+  .map(task => (
     <Todo
-        id={task.id}
-        name={task.name}
-        completed={task.completed}
-        key={task.id}
-        toggleTaskCompleted={toggleTaskCompleted}
-        deleteTask={deleteTask}
-        editTask={editTask}
-      />
-    )
-  );
+      id={task.id}
+      name={task.name}
+      completed={task.completed}
+      key={task.id}
+      toggleTaskCompleted={toggleTaskCompleted}
+      deleteTask={deleteTask}
+      editTask={editTask}
+    />
+  ));
 
   const filterList = FILTER_NAMES.map(name => (
     <FilterButton
@@ -49,7 +52,6 @@ function App(props) {
     />
   ));
   
-
   //Altera estado da checkbox
   function toggleTaskCompleted(id) {
     const updatedTasks = tasks.map(task => {
@@ -82,6 +84,7 @@ function App(props) {
     setTasks(editedTaskList);
   }
   
+  
   //Conta quantidade de tarefas e verifica se vai imprimir tarefas ou tarefa.  
   const tasksNoun = taskList.length !== 1 ? 'tasks' : 'task';
   //Título do texto na tela
@@ -96,13 +99,7 @@ function App(props) {
       </div>
   
       <h2 id="list-heading">{headingText}</h2>
-      <ul
-        role="list"
-        className="todo-list stack-large stack-exception"
-        aria-labelledby="list-heading"
-      >
-        {taskList}
-      </ul>
+      {taskList}
     </div>
   );
 }

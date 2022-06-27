@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function Todo(props) {
-  const [isEditing, setEditing] = useState(true);
+  const [isEditing, setEditing] = useState(false); //Se alterar para true: Estados serão só editar. 
   const [newName, setNewName] = useState('');
 
   //Função que definirá um novo nome
@@ -77,6 +77,7 @@ export default function Todo(props) {
     </div>
   );
     
-  return <li className="todo">{isEditing ? editingTemplate : viewTemplate}  </li>    
+  return <li className="todo">{isEditing ? editingTemplate : viewTemplate}</li>;
+
   }
   
