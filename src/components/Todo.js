@@ -1,8 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
 
 export default function Todo(props) {
+  //Hooks para referências dos botões editar - view e editar-editar
+  const editFieldRef = useRef(null);
+  const editButtonRef = useRef(null);
   const [isEditing, setEditing] = useState(false); //Se alterar para true: Estados serão só editar. 
   const [newName, setNewName] = useState('');
+  const wasEditing = usePrevious(isEditing);
 
   //Função que definirá um novo nome
   function handleChange(e) {
@@ -28,6 +40,7 @@ export default function Todo(props) {
           type="text"
           value={newName}
           onChange={handleChange}
+          ref={editFieldRef}
         />
 
       </div>
@@ -48,6 +61,7 @@ export default function Todo(props) {
       </div>
     </form>
   );
+
   const viewTemplate = (
     <div className="stack-small">
       <div className="c-cb">
@@ -62,9 +76,14 @@ export default function Todo(props) {
           </label>
         </div>
         <div className="btn-group">
-          <button type="button" className="btn" onClick={() => setEditing(true)}>
-            Edit <span className="visually-hidden">{props.name}</span>
-          </button>
+        <button
+          type="button"
+          className="btn"
+          onClick={() => setEditing(true)}
+          ref={editButtonRef}
+        >
+          Edit <span className="visually-hidden">{props.name}</span>
+        </button>
 
           <button
             type="button"
@@ -76,8 +95,16 @@ export default function Todo(props) {
         </div>
     </div>
   );
-    
-  return <li className="todo">{isEditing ? editingTemplate : viewTemplate}</li>;
 
+  useEffect(() => {
+    if (!wasEditing && isEditing) {
+      editFieldRef.current.focus();
+    }
+    if (wasEditing && !isEditing) {
+      editButtonRef.current.focus();
+    }
+  }, [wasEditing, isEditing]);
+  
+  return <li className="todo">{isEditing ? editingTemplate : viewTemplate}</li>;
   }
   
